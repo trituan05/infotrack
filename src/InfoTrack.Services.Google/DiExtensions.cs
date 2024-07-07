@@ -4,14 +4,13 @@ namespace InfoTrack.Services.Google
 {
     public static class DiExtensions
     {
-        public static IServiceCollection AddGoogleSearch(this IServiceCollection services)
+        public static IServiceCollection AddGoogleSearch(this IServiceCollection services, string secretKey, string email, string websiteUrl)
         {
             services.AddHttpClient<IGoogleSearchService, GoogleSearchService>()
                 .ConfigureHttpClient((sp, client) =>
                 {
                     client.BaseAddress = new Uri("https://www.google.co.uk/", UriKind.Absolute);
                 });
-
             return services;
         }
     }

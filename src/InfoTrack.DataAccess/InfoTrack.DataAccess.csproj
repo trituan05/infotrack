@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InfoTrack.Infrastructure\InfoTrack.Infrastructure.csproj" />
+    <ProjectReference Include="..\InfoTrack.Models.WebApp\InfoTrack.Models.WebApp.csproj" />
   </ItemGroup>
 
 </Project>

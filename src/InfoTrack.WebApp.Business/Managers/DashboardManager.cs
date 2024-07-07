@@ -1,12 +1,13 @@
 ﻿using InfoTrack.DataAccess.UnitOfWork;
 using InfoTrack.Services.Google.Services;
-using System.Text.RegularExpressions;
 
 namespace InfoTrack.WebApp.Business.Managers
 {
     public interface IDashboardManager
     {
         Task<List<int>> SearchByKeyword(string keyword, string url);
+        Task<List<Models.WebApp.Models.Ranking>> GetDailyReport();
+        Task<List<Models.WebApp.Models.Ranking>> GetWeeklyReport();
     }
 
     internal class DashboardManager : IDashboardManager
@@ -22,18 +23,20 @@ namespace InfoTrack.WebApp.Business.Managers
 
         public async Task<List<int>> SearchByKeyword(string keyword, string url)
         {
-            List<int> result = new() { 0 };
-            string data = await _googleSearchService.GetGoogleSearch(keyword);
-            Dictionary<string, int> searchResult = GetGooglePosition(data);
-            if(searchResult.Any())
-            {
-                result = searchResult
-                    .Where(q => q.Key.Contains(url))
-                    .Select(s => s.Value)
-                    .ToList();
+            List<int> data = await _googleSearchService.GetGoogleSearch(keyword, url);
+            await StoreRanking(keyword, url, data.First());
+            return data;
+        }
 
-                await StoreRanking(keyword, url, result.First());
-            }
+        public async Task<List<Models.WebApp.Models.Ranking>> GetDailyReport()
+        {
+            var result = await _unitOfWork.Rankings.GetReport(DateTime.UtcNow, DateTime.UtcNow);
+            return result;
+        }
+
+        public async Task<List<Models.WebApp.Models.Ranking>> GetWeeklyReport()
+        {
+            var result = await _unitOfWork.Rankings.GetReport(DateTime.UtcNow.AddDays(-7), DateTime.UtcNow);
             return result;
         }
 
@@ -53,27 +56,6 @@ namespace InfoTrack.WebApp.Business.Managers
             {
                 await _unitOfWork.DisposeTransactionAsync();
             }
-        }
-
-        private static Dictionary<string, int> GetGooglePosition(string data)
-        {
-            Dictionary<string, int> result = new();
-            string hrefPattern = @"<div[^>]*>\s*<a\s+href=""([^""]*)""";
-            Match regexMatch = Regex.Match(data, hrefPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-
-            int index = 1;
-            while (regexMatch.Success)
-            {
-                Group? collection = regexMatch.Groups[1];
-                if (!collection.Value.Contains("google.co.uk") && collection.Value.Contains("http"))
-                {
-                    result.Add(collection.Value.Replace("/url?q=", ""), index);
-                    index++;
-                }
-                regexMatch = regexMatch.NextMatch();
-            }
-
-            return result;
         }
     }
 }

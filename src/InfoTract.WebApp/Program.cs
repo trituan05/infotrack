@@ -7,7 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddBusinessLogic();
-builder.Services.AddGoogleSearch();
+builder.Services.AddGoogleSearch(
+    builder.Configuration.GetValue<string>("GoogleSearchConsole:SecretKey"),
+    builder.Configuration.GetValue<string>("GoogleSearchConsole:Email"),
+    builder.Configuration.GetValue<string>("GoogleSearchConsole:WebsiteUrl"));
 builder.Services.AddDataAccess(builder.Configuration.GetConnectionString("DbConnection"));
 
 var app = builder.Build();
