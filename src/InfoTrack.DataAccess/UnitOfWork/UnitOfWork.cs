@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using InfoTrack.DataAccess.DbContexts;
+﻿using InfoTrack.DataAccess.DbContexts;
 using InfoTrack.DataAccess.Repository;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -23,10 +22,10 @@ namespace InfoTrack.DataAccess.UnitOfWork
 
         public IRankingRepository Rankings { get; private set; }
 
-        public UnitOfWork(ApplicationDbContext dbContext, IMapper mapper)
+        public UnitOfWork(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            Rankings = new RankingRepository(_dbContext, mapper);
+            Rankings = new RankingRepository(_dbContext);
         }
 
         public async Task BeginTransactionAsync(CancellationToken cancellationToken = default)

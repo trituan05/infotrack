@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using InfoTrack.DataAccess.DbContexts;
+﻿using InfoTrack.DataAccess.DbContexts;
 
 namespace InfoTrack.DataAccess.Repository
 {
-    public interface IRankingRepository
+    public interface IRankingRepository 
     {
         Task StoreRankData(string url, string keywords, int position);
     }
@@ -11,12 +10,10 @@ namespace InfoTrack.DataAccess.Repository
     internal class RankingRepository : IRankingRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public RankingRepository(ApplicationDbContext context, IMapper mapper)
+        public RankingRepository(ApplicationDbContext context)
         {
             _dbContext = context;
-            _mapper = mapper;
         }
 
         public async Task StoreRankData(string url, string keywords, int position)

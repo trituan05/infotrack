@@ -2,9 +2,9 @@
 {
     public class Ranking: BaseEntity
     {
-        public string? Url { get; set; }
+        public string Url { get; set; } = default!;
 
-        public string? Keywords { get; set; }
+        public string Keywords { get; set; } = default!;
 
         public int Rank { get; set; }
 

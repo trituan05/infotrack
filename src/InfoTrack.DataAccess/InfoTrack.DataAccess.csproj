@@ -24,4 +24,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\InfoTrack.Infrastructure\InfoTrack.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
