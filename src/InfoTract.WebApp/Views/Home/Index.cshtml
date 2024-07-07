@@ -1,0 +1,92 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+  }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+  
+  header {
+    background-color: #4285f4;
+    color: #ffffff;
+    text-align: center;
+  }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        box-sizing: border-box;
+    }
+
+    .button {
+        display: inline-block;
+        background-color: #4285f4;
+        color: #ffffff;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 3px;
+        font-size: 16px;
+    }
+
+        .button:hover {
+            background-color: #3367d6;
+        }
+  
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  .section h2 {
+    color: #4285f4;
+    border-bottom: 2px solid #4285f4;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .section p {
+    color: #555555;
+  }
+  
+</style>
+<div class="text-center">
+    <header>
+        <h1>Welcome to Info Track Search Console</h1>
+        <p>We can search and see where and how many times your website sits on the list.</p>
+    </header>
+    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Index">
+        <div class="form-group">
+            <label for="url-prefix">Keywords</label>
+            <input type="text" id="txtKeywords" name="keywords" placeholder="land registry searches" required>
+        </div>
+        <div class="form-group">
+            <label for="url-prefix">URL</label>
+            <input type="text" id="txtUrl" name="url" placeholder="https://www.infotrack.co.uk/" required>
+        </div>
+
+        <button type="submit" class="button" value="Submit">Continue</button>
+
+        @if (ViewBag.Name != null)
+        {
+            <div class="form-group" style="margin-top: 45px;">
+                <label for="url-prefix">Your website position: @ViewBag.Name</label>
+            </div>
+        }
+    </form>
+</div>
